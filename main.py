@@ -3,9 +3,12 @@ def new_order():
     order = request.json
     line_items = order.get("line_items", [])
     
-    products = "\n".join(
-        [f"- {item['title']} (Qty: {item['quantity']})" for item in line_items if item.get('title') != 'pics']
-    )
+    # Remove garbage titles like 'pics'
+    products = "\n".join([
+        f"- {item['title']} (Qty: {item['quantity']})"
+        for item in line_items
+        if item.get('title') and item['title'].lower() != 'pics'
+    ])
 
     message = f"""
 🔔 *New Shopify Order!*
