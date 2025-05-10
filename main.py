@@ -1,3 +1,11 @@
+from flask import Flask, request
+import requests
+
+app = Flask(__name__)
+
+BOT_TOKEN = "7652319795:AAHy47-PixCTdfm8CW8Dm-kPRJsDmdVmOHE"
+CHAT_ID = "1477503070"
+
 @app.route("/new-order", methods=["POST"])
 def new_order():
     order = request.json
