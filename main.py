@@ -32,3 +32,29 @@ def new_order():
         json={"chat_id": CHAT_ID, "text": message.strip(), "parse_mode": "Markdown"}
     )
     return "OK", 200
+@app.route("/abandoned-cart", methods=["POST"])
+def abandoned_cart():
+    cart = request.json
+    customer_email = cart.get("email", "Unknown")
+    created_at = cart.get("created_at", "")
+    line_items = cart.get("line_items", [])
+
+    products = "\n".join([
+        f"- {item['title']} (Qty: {item['quantity']})"
+        for item in line_items
+    ])
+
+    message = f"""
+⚠️ *Abandoned Cart Alert!*
+*Email:* {customer_email}
+*Created At:* {created_at}
+*Product(s):*
+{products}
+    """
+
+    requests.post(
+        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+        json={"chat_id": CHAT_ID, "text": message.strip(), "parse_mode": "Markdown"}
+    )
+
+    return "OK", 200
