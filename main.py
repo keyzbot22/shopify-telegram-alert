@@ -3,11 +3,11 @@ def new_order():
     order = request.json
     line_items = order.get("line_items", [])
     
-    # Remove garbage titles like 'pics'
+    # Filter out invalid or spam items like 'pics'
     products = "\n".join([
         f"- {item['title']} (Qty: {item['quantity']})"
         for item in line_items
-        if item.get('title') and item['title'].lower() != 'pics'
+        if item.get('title') and item['title'].strip().lower() != 'pics'
     ])
 
     message = f"""
